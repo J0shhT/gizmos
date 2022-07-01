@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 
-namespace Popcron
+namespace RuntimeGizmos
 {
     public class PolygonDrawer : Drawer
     {
-		public PolygonDrawer()
-		{
-			
-		}
-		
+        public PolygonDrawer()
+        {
+
+        }
+
         public override int Draw(ref Vector3[] buffer, params object[] values)
         {
             Vector3 position = (Vector3)values[0];

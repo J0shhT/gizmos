@@ -1,8 +1,10 @@
 {
-    "name": "Popcron.Gizmos",
+    "name": "J0shhT.RuntimeGizmos.Editor",
     "references": [],
     "optionalUnityReferences": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

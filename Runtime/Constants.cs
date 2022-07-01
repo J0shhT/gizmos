@@ -1,8 +1,8 @@
-﻿namespace Popcron
+﻿namespace RuntimeGizmos
 {
     public class Constants
     {
-        public const string UniqueIdentifier = "Popcron.Gizmos";
+        public const string UniqueIdentifier = "J0shhT.RuntimeGizmos";
         public const string EnabledKey = UniqueIdentifier + ".Enabled";
     }
 }

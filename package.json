@@ -1,7 +1,7 @@
 {
-    "name": "com.popcron.gizmos",
-    "displayName": "Popcron Gizmos",
-    "version": "1.6.7",
+    "name": "ca.josht.gizmos",
+    "displayName": "Runtime Gizmos",
+    "version": "1.7.0",
     "unity": "2018.3",
-    "description": "Quick GL drawing utility for debugging."
+    "description": "Used for drawing runtime gizmos in Unity3D."
 }

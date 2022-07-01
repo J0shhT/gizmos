@@ -9,105 +9,108 @@ using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
-public class Updater : Editor
+namespace RuntimeGizmos
 {
-    public class Package
+    public class Updater : Editor
     {
-        public string version;
-    }
-
-    private const string PackageName = "com.popcron.gizmos";
-    private const string PackageURL = "https://raw.githubusercontent.com/popcron/gizmos/master/package.json";
-    private const string CanUpdateKey = "Popcron.Gizmos.CanUpdate";
-    private const string CheckForUpdateText = "Popcron/Gizmos/Check for updates";
-    private const string UpdateText = "Popcron/Gizmos/Update";
-
-    private static async Task<bool> IsUpdateAvailable()
-    {
-        WebClient wc = new WebClient();
-        string json = await wc.DownloadStringTaskAsync(PackageURL);
-        string versionText = JsonUtility.FromJson<Package>(json).version;
-        Version version = Version.Parse(versionText);
-        Version currentVersion = await GetLocalVersion();
-
-        if (currentVersion != null)
+        public class Package
         {
-            bool updateAvailable = currentVersion.CompareTo(version) < 0;
-            return updateAvailable;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    private static async Task<Version> GetLocalVersion()
-    {
-        ListRequest listRequest = Client.List(true);
-        while (!listRequest.IsCompleted)
-        {
-            await Task.Delay(1);
+            public string version;
         }
 
-        foreach (PackageInfo pack in listRequest.Result)
+        private const string PackageName = "ca.josht.gizmos";
+        private const string PackageURL = "https://raw.githubusercontent.com/J0shhT/gizmos/master/package.json";
+        private const string CanUpdateKey = "J0shhT.RuntimeGizmos.CanUpdate";
+        private const string CheckForUpdateText = "Tools/Runtime Gizmos/Check for updates";
+        private const string UpdateText = "Tools/Runtime Gizmos/Update";
+
+        private static async Task<bool> IsUpdateAvailable()
         {
-            if (pack.name == PackageName)
+            WebClient wc = new WebClient();
+            string json = await wc.DownloadStringTaskAsync(PackageURL);
+            string versionText = JsonUtility.FromJson<Package>(json).version;
+            Version version = Version.Parse(versionText);
+            Version currentVersion = await GetLocalVersion();
+
+            if (currentVersion != null)
             {
-                if (pack.source == PackageSource.Local) continue;
-
-                Version localVersion = Version.Parse(pack.version);
-                return localVersion;
+                bool updateAvailable = currentVersion.CompareTo(version) < 0;
+                return updateAvailable;
+            }
+            else
+            {
+                return false;
             }
         }
 
-        return null;
-    }
-
-    [MenuItem(CheckForUpdateText, false, 0)]
-    [DidReloadScripts]
-    private static async void CheckForUpdates()
-    {
-        //check for updates
-        bool canUpdate = await IsUpdateAvailable();
-        EditorPrefs.SetBool(CanUpdateKey, canUpdate);
-    }
-
-    [MenuItem(UpdateText, false, 0)]
-    public static void Update()
-    {
-        //get the manifest.json file
-        string path = Application.dataPath;
-        path = Directory.GetParent(path).FullName;
-        path = Path.Combine(path, "Packages", "manifest.json");
-        if (File.Exists(path))
+        private static async Task<Version> GetLocalVersion()
         {
-            string text = File.ReadAllText(path);
-            int index = text.IndexOf("\"lock\"");
-            int start = index + text.Substring(index).IndexOf("\"" + PackageName + "\"");
-            int end = start + text.Substring(start).IndexOf("}") + 2;
-            string entry = text.Substring(start, end - start);
-
-            //doesnt end with a comma, so remove the comma at the beginning of this entry if it exists because its the last entry
-            if (!entry.EndsWith(","))
+            ListRequest listRequest = Client.List(true);
+            while (!listRequest.IsCompleted)
             {
-                if (text.Substring(start - 2).Contains(","))
+                await Task.Delay(1);
+            }
+
+            foreach (PackageInfo pack in listRequest.Result)
+            {
+                if (pack.name == PackageName)
                 {
-                    //4 spaces for tabs and 3 for quote, comma and }
-                    int comma = (start - 7) + text.Substring(start - 7).IndexOf(",");
-                    text = text.Remove(comma, 1);
+                    if (pack.source == PackageSource.Local) continue;
+
+                    Version localVersion = Version.Parse(pack.version);
+                    return localVersion;
                 }
             }
 
-            text = text.Replace(entry, "");
-            File.WriteAllText(path, text);
-
-            AssetDatabase.Refresh();
+            return null;
         }
-    }
 
-    [MenuItem(UpdateText, true)]
-    private static bool CanUpdate()
-    {
-        return EditorPrefs.GetBool(CanUpdateKey);
+        [MenuItem(CheckForUpdateText, false, 0)]
+        [DidReloadScripts]
+        private static async void CheckForUpdates()
+        {
+            //check for updates
+            bool canUpdate = await IsUpdateAvailable();
+            EditorPrefs.SetBool(CanUpdateKey, canUpdate);
+        }
+
+        [MenuItem(UpdateText, false, 0)]
+        public static void Update()
+        {
+            //get the manifest.json file
+            string path = Application.dataPath;
+            path = Directory.GetParent(path).FullName;
+            path = Path.Combine(path, "Packages", "manifest.json");
+            if (File.Exists(path))
+            {
+                string text = File.ReadAllText(path);
+                int index = text.IndexOf("\"lock\"");
+                int start = index + text.Substring(index).IndexOf("\"" + PackageName + "\"");
+                int end = start + text.Substring(start).IndexOf("}") + 2;
+                string entry = text.Substring(start, end - start);
+
+                //doesnt end with a comma, so remove the comma at the beginning of this entry if it exists because its the last entry
+                if (!entry.EndsWith(","))
+                {
+                    if (text.Substring(start - 2).Contains(","))
+                    {
+                        //4 spaces for tabs and 3 for quote, comma and }
+                        int comma = (start - 7) + text.Substring(start - 7).IndexOf(",");
+                        text = text.Remove(comma, 1);
+                    }
+                }
+
+                text = text.Replace(entry, "");
+                File.WriteAllText(path, text);
+
+                AssetDatabase.Refresh();
+            }
+        }
+
+        [MenuItem(UpdateText, true)]
+        private static bool CanUpdate()
+        {
+            return EditorPrefs.GetBool(CanUpdateKey);
+        }
     }
 }

@@ -13,7 +13,7 @@ using UnityEditor.SceneManagement;
 #if !UNITY_2019_1_OR_NEWER
 using System;
 
-public struct ScriptableRenderContext {}
+public struct ScriptableRenderContext { }
 
 public static class RenderPipelineManager
 {
@@ -22,7 +22,7 @@ public static class RenderPipelineManager
 
 #endif
 
-namespace Popcron
+namespace RuntimeGizmos
 {
     [ExecuteInEditMode]
     [AddComponentMenu("")]
@@ -280,17 +280,17 @@ namespace Popcron
 
             return false;
         }
-		
-		private void Update()
-		{
-			//always render something
-			Gizmos.Line(default, default);
-		}
+
+        private void Update()
+        {
+            //always render something
+            Gizmos.Line(default, default);
+        }
 
         private void OnRendered(Camera camera)
         {
             Material.SetPass(Gizmos.Pass);
-			
+
             //shouldnt be rendering
             if (!Gizmos.Enabled)
             {
@@ -300,13 +300,13 @@ namespace Popcron
             //check if this camera is ok to render with
             if (!ShouldRenderCamera(camera))
             {
-				GL.PushMatrix();
-				GL.Begin(GL.LINES);
-				
-				//bla bla bla
-				
-				GL.End();
-				GL.PopMatrix();
+                GL.PushMatrix();
+                GL.Begin(GL.LINES);
+
+                //bla bla bla
+
+                GL.End();
+                GL.PopMatrix();
                 return;
             }
 

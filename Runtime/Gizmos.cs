@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Popcron
+namespace RuntimeGizmos
 {
     public class Gizmos
     {

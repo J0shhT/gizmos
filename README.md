@@ -1,5 +1,5 @@
 ![Ah, gl lines](https://cdn.discordapp.com/attachments/377316629220032523/576127655712391198/unknown.png)
-# Gizmos
+# Runtime Gizmos
 Used for drawing runtime gizmos in builds and editor from any context in the code. It was created when I realized that the built in unity gizmos (Gizmos.DrawWireSphere, etc) don't render in builds, so I made this utility to be able to use.
 
 *Note: Currently doesn't work if a render pipline asset is set in the graphics settings of the project in SRP, if the version of the SRP package is below 7.1.1*
@@ -9,19 +9,19 @@ Used for drawing runtime gizmos in builds and editor from any context in the cod
 - Git
 
 ## Installation
-To install for local use, download this repo and copy everything from this repository to `<YourUnityProject>/Packages/Popcron Gizmos` folder.
+To install for local use, download this repo and copy everything from this repository to `<YourUnityProject>/Packages/Runtime Gizmos` folder.
 
 If using 2018.3.x or higher, you can add a new entry to the manifest.json file in your Packages folder:
 ```json
-"com.popcron.gizmos": "https://github.com/popcron/gizmos.git"
+"ca.josht.gizmos": "https://github.com/J0shhT/gizmos.git"
 ```
 
-The package checks for updates every time a compile happens, and it will say so under the `Popcron/Gizmos/Update` menu if one is available, upon pressing it will make unity update the package to the latest version thats here on github. Though you can always edit it yourself if you'd like. 
+The package checks for updates every time a compile happens, and it will say so under the `Tools/Runtime Gizmos/Update` menu if one is available, upon pressing it will make unity update the package to the latest version thats here on github. Though you can always edit it yourself if you'd like. 
 
 ## Example
 ```cs
 using UnityEngine;
-using Gizmos = Popcron.Gizmos;
+using Gizmos = RuntimeGizmos.Gizmos;
 
 [ExecuteAlways]
 public class GizmoDrawer : MonoBehaviour
@@ -92,12 +92,12 @@ The `Draw` method takes in a ref parameter to a Vector3 array as the buffer, and
 - `Gizmos.Circle` = Draws a 2D circle that is oriented to the camera by default
 
 ## Notes
-The package uses the same class name as the built-in gizmo class, because of this, you will need to use an alias to point to the right class (`using Gizmos = Popcron.Gizmos`).
+The package uses the same class name as the built-in gizmo class, because of this, you will need to use an alias to point to the right class (`using Gizmos = RuntimeGizmos.Gizmos`).
 
-The alternative is to make a global class with the same name that redirects all of its calls to Popcron.Gizmos. The downside to this is that you will need to be explicit when calling the UnityEngine.Gizmos class if you ever need to. Choose your poison.
+The alternative is to make a global class with the same name that redirects all of its calls to RuntimeGizmos.Gizmos. The downside to this is that you will need to be explicit when calling the UnityEngine.Gizmos class if you ever need to. Choose your poison.
 
 ## FAQ
-- **What namespace?** 'Popcron'
+- **What namespace?** 'RuntimeGizmos'
 - **Does it work in builds?** Yes
 - **Is there frustum culling?** Yes, it can be toggled with Gizmos.FrustumCulling
 - **It's not rendering in game!** Check if your gizmo code is in OnDrawGizmos, because this method isnt called in builds, and ensure that Gizmos.Enabled is true

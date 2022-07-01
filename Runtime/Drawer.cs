@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Popcron
+namespace RuntimeGizmos
 {
     public abstract class Drawer
     {
@@ -24,12 +24,12 @@ namespace Popcron
                 typeToDrawer = new Dictionary<Type, Drawer>();
 
                 //add defaults
-				typeToDrawer.Add(typeof(CubeDrawer), new CubeDrawer());
-				typeToDrawer.Add(typeof(LineDrawer), new LineDrawer());
-				typeToDrawer.Add(typeof(PolygonDrawer),new PolygonDrawer());
-				typeToDrawer.Add(typeof(SquareDrawer), new SquareDrawer());
+                typeToDrawer.Add(typeof(CubeDrawer), new CubeDrawer());
+                typeToDrawer.Add(typeof(LineDrawer), new LineDrawer());
+                typeToDrawer.Add(typeof(PolygonDrawer), new PolygonDrawer());
+                typeToDrawer.Add(typeof(SquareDrawer), new SquareDrawer());
 
-				//find extras
+                //find extras
                 Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
                 foreach (Assembly assembly in assemblies)
                 {
@@ -46,7 +46,7 @@ namespace Popcron
                             try
                             {
                                 Drawer value = (Drawer)Activator.CreateInstance(type);
-							    typeToDrawer[type] = value;
+                                typeToDrawer[type] = value;
                             }
                             catch (Exception e)
                             {
